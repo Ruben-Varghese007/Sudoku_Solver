@@ -5,7 +5,7 @@ import time
 # Set up the Streamlit page
 st.title("Sudoku Solver (Backtracking)")
 st.write("This app generates a random Sudoku puzzle and solves it using Backtracking Algorithm.")
-st.write("Name:  [ Ruben George Varghese ]")
+st.write("Author:  [ Ruben George Varghese ]")
 st.write("GitHub: [ https://github.com/Ruben-Varghese007/Sudoku_Solver ]")
 st.divider()
 
