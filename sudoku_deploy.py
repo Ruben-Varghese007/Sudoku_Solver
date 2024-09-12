@@ -3,7 +3,7 @@ import random
 import time
 
 # Set up the Streamlit page
-st.title("Sudoku Solver : Backtracking Approach")
+st.title("Sudoku Solver (Backtracking)")
 st.write("This app generates a random Sudoku puzzle and solves it using a Backtracking Algorithm.")
 
 # Function to display Sudoku grid in Streamlit with color differentiation
