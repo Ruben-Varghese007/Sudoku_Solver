@@ -11,7 +11,7 @@
 - To Deploy using Streamlit : sudoku_deploy.py
 - To Run using Pygame : sudoku_solver.py
 - Languages used : Python.
-- Live Demo : [ https://sudoku-solver-backtracking-approach.streamlit.app/ ]
+- Live Demo : [ https://sudoku-solver-backtracking.streamlit.app/ ]
 
 ## Requirements
 
