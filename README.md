@@ -23,9 +23,7 @@ pip install pygame
 
 **Streamlit**:
 
-```sh
+```
 pip install streamlit
 ```
 
-- pygame : [ pip install pygame ]
-- streamlit : [ pip install streamlit ]
