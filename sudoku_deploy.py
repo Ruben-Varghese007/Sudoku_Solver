@@ -4,7 +4,10 @@ import time
 
 # Set up the Streamlit page
 st.title("Sudoku Solver (Backtracking)")
-st.write("This app generates a random Sudoku puzzle and solves it using Backtracking Algorithm.")
+st.subheader("This app generates a random Sudoku puzzle and solves it using a Backtracking Algorithm.")
+st.write("Name:  [ Ruben George Varghese ]")
+st.write("GitHub: [ https://github.com/Ruben-Varghese007/Sudoku_Solver ]")
+st.divider()
 
 # Function to display Sudoku grid in Streamlit with color differentiation
 def display_grid(grid, grid_placeholder, original_grid):
