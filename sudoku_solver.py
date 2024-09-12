@@ -8,7 +8,7 @@ pygame.init()
 # Set up display
 WIDTH, HEIGHT = 540, 540
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Sudoku Brute Force")
+pygame.display.set_caption("Sudoku Solver (Backtracking)")
 
 # Colors
 OFFWHITE = (225, 225, 225)
