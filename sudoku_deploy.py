@@ -4,8 +4,8 @@ import time
 
 # Set up the Streamlit page
 st.title("Sudoku Solver (Backtracking)")
-st.write("This app generates a random Sudoku puzzle and solves it using Backtracking Algorithm.")
-st.write("Author:  [ Ruben George Varghese ]")
+st.write("This app generates a random Sudoku puzzle or solves an existing one using Backtracking Algorithm.")
+st.write("Name:  [ Ruben George Varghese ]")
 st.write("GitHub: [ https://github.com/Ruben-Varghese007/Sudoku_Solver ]")
 st.divider()
 
@@ -106,25 +106,89 @@ def generate_sudoku():
             grid[row][col] = num
     return grid
 
+# Initialize grid and placeholders
+def initialize_grid():
+    return [[0 for _ in range(9)] for _ in range(9)]
+
+# Validate Sudoku grid for duplicates in rows, columns, and 3x3 boxes
+def validate_sudoku(grid):
+    def has_duplicates(seq):
+        seq = [num for num in seq if num != 0]
+        return len(seq) != len(set(seq))
+    
+    # Check rows and columns
+    for i in range(9):
+        if has_duplicates(grid[i]) or has_duplicates([grid[j][i] for j in range(9)]):
+            return False
+    
+    # Check 3x3 subgrids
+    for i in range(0, 9, 3):
+        for j in range(0, 9, 3):
+            subgrid = [grid[x][y] for x in range(i, i+3) for y in range(j, j+3)]
+            if has_duplicates(subgrid):
+                return False
+    
+    return True
+
 # Streamlit app logic
-if st.button('Generate and Solve Sudoku'):
-    # Generate the puzzle
-    puzzle = generate_sudoku()
-    
-    # Store the original grid for color differentiation
-    original_grid = [row[:] for row in puzzle]  # Copy the puzzle
+input_method = st.radio("Choose Input Method:", ("Generate Random Puzzle", "Enter Sudoku Puzzle"))
 
-    # Placeholder for the grid to keep updating it
-    grid_placeholder = st.empty()
+if input_method == "Enter Sudoku Puzzle":
+    st.write("Enter your Sudoku puzzle below:")
+    st.write("Note: Cell(row,column) - Only enter values between 1 and 9")
+    sudoku_grid = initialize_grid()
     
-    # Display the initial puzzle
-    display_grid(puzzle, grid_placeholder, original_grid)
+    # Create a 9x9 grid layout
+    inputs = []
+    for i in range(9):
+        row_inputs = st.columns(9)
+        row_values = []
+        for j in range(9):
+            input_key = f"cell_{i}_{j}"
+            value = row_inputs[j].text_input("", value='', max_chars=1, key=input_key, help=f"Cell ({i+1},{j+1})")
+            row_values.append(value)
+        inputs.append(row_values)
 
-    # Add some vertical space between the puzzle and the message
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Attempt to solve the puzzle with a brute force approach
-    if solve_sudoku_visual(puzzle, grid_placeholder, original_grid):
-        st.success("Sudoku solved!")
-    else:
-        st.error("Failed to solve the Sudoku puzzle.")
+    # Validate input values
+    def get_grid_from_inputs():
+        grid = initialize_grid()
+        for i in range(9):
+            for j in range(9):
+                try:
+                    value = int(inputs[i][j])
+                    if 1 <= value <= 9:
+                        grid[i][j] = value
+                except ValueError:
+                    pass
+        return grid
+
+    # Convert input values to grid and validate
+    if st.button('Solve Sudoku'):
+        sudoku_grid = get_grid_from_inputs()
+        original_grid = [row[:] for row in sudoku_grid]  # Copy the grid
+
+        if not validate_sudoku(sudoku_grid):
+            st.error("Invalid Sudoku grid. Please correct your input.")
+        else:
+            grid_placeholder = st.empty()
+            display_grid(sudoku_grid, grid_placeholder, original_grid)
+
+            # Add some vertical space between the puzzle and the message
+            st.markdown("<br>", unsafe_allow_html=True)
+
+            if solve_sudoku_visual(sudoku_grid, grid_placeholder, original_grid):
+                st.success("Sudoku solved!")
+            else:
+                st.error("Failed to solve the Sudoku puzzle.")
+
+elif input_method == "Generate Random Puzzle":
+    if st.button('Generate and Solve Sudoku'):
+        puzzle = generate_sudoku()
+        original_grid = [row[:] for row in puzzle]  # Copy the puzzle
+        grid_placeholder = st.empty()
+        display_grid(puzzle, grid_placeholder, original_grid)
+        st.markdown("<br>", unsafe_allow_html=True)
+        if solve_sudoku_visual(puzzle, grid_placeholder, original_grid):
+            st.success("Sudoku solved!")
+        else:
+            st.error("Failed to solve the Sudoku puzzle.")
