@@ -159,7 +159,7 @@ if input_method == "Enter Sudoku Puzzle":
                     if 1 <= value <= 9:
                         grid[i][j] = value
                 except ValueError:
-                    pass
+                    pass  # Empty or invalid input treated as 0 (empty cell)
         return grid
 
     # Convert input values to grid and validate
@@ -167,7 +167,11 @@ if input_method == "Enter Sudoku Puzzle":
         sudoku_grid = get_grid_from_inputs()
         original_grid = [row[:] for row in sudoku_grid]  # Copy the grid
 
-        if not validate_sudoku(sudoku_grid):
+        # Check if the entire grid is empty
+        if all(sudoku_grid[i][j] == 0 for i in range(9) for j in range(9)):
+            st.error("Please enter at least one number in the Sudoku grid.")
+        # Check if the entered values are valid
+        elif not validate_sudoku(sudoku_grid):
             st.error("Invalid Sudoku grid. Please correct your input.")
         else:
             grid_placeholder = st.empty()
